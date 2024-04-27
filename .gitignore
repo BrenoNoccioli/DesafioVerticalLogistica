@@ -1,3 +1,13 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Intellij IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+
 # Compiled class file
 *.class
 
