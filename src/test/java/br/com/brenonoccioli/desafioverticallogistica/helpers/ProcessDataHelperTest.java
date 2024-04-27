@@ -68,8 +68,8 @@ class ProcessDataHelperTest {
     @CsvSource(
             {"0000000070                              Palmer Prosacco00000007530000000003     1836.7420210308, 20210308",
              "0000000070                              Palmer Prosacco00000007530000000003     1836.7400000000,"})
-    void testGetOrderDate(String input, Long expected){
-        Long resp = ProcessDataHelper.getOrderDate(input);
+    void testGetOrderDate(String input, String expected){
+        String resp = ProcessDataHelper.getOrderDate(input);
         assertEquals(expected, resp);
     }
 }

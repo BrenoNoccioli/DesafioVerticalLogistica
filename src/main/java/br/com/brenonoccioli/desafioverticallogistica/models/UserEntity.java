@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
-import java.util.List;
+import java.util.HashSet;
 
 @Builder
 @Data
@@ -16,5 +16,5 @@ public class UserEntity {
     private Long id;
     private String name;
     @OneToMany(mappedBy = "user")
-    private List<OrderEntity> orders;
+    private HashSet<OrderEntity> orders;
 }

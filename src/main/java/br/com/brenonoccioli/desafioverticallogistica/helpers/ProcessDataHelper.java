@@ -37,10 +37,9 @@ public class ProcessDataHelper {
         return cleaned != null ? new BigDecimal(cleaned) : null;
     }
 
-    public static Long getOrderDate(String line){
+    public static String getOrderDate(String line){
         String orderDate = line.substring(87, 95);
-        String cleaned = cleanZeroBefore(orderDate);
-        return cleaned != null ? Long.valueOf(cleaned) : null;
+        return cleanZeroBefore(orderDate);
     }
 
     private static String cleanZeroBefore(String str) {

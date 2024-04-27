@@ -1,7 +1,7 @@
 package br.com.brenonoccioli.desafioverticallogistica.models;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +21,6 @@ public class OrderEntity {
     private UserEntity user;
     private BigDecimal totalPrice;
     private LocalDate date;
-    @ManyToMany
+    @Embedded
     private List<ProductEntity> products;
 }

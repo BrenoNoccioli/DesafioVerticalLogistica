@@ -5,26 +5,25 @@ import br.com.brenonoccioli.desafioverticallogistica.service.DataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class Controller {
+public class DataArchiveController {
 
     private DataService service;
 
-    @PostMapping
-    public ResponseEntity<?> postData(String dataArchive) throws IOException {
+    @PostMapping("/archive")
+    public ResponseEntity<?> inputData(@RequestBody String dataArchive) {
 
-        service.processData(dataArchive);
+        if (dataArchive == null || dataArchive.isEmpty()){
+            //Lança Exception;
+        }
+
+        service.proccessData(dataArchive);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Arquivo processado com sucesso!");
     }
