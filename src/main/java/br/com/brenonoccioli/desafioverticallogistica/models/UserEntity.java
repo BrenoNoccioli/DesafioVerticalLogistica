@@ -1,20 +1,22 @@
 package br.com.brenonoccioli.desafioverticallogistica.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 
 @Builder
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
     @Id
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private HashSet<OrderEntity> orders;
 }

@@ -19,10 +19,9 @@ import static br.com.brenonoccioli.desafioverticallogistica.helpers.ProcessDataH
 @Service
 @RequiredArgsConstructor
 public class DataService {
+    private final UsersRepository usersRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataService.class);
-
-    private final UsersRepository usersRepository;
 
     public void proccessData(String dataArchive) {
         LOGGER.info(String.format("Iniciando processamento do arquivo: %s", dataArchive));
@@ -34,6 +33,7 @@ public class DataService {
 
         while (scanner.hasNext()){
             String line = scanner.nextLine();
+            LOGGER.info(String.format("Linha: %s", line));
 
             if (lineIsValid(line)){
                 UserEntity newUser = buildUserFromLineFields(line);
