@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @Data
@@ -17,6 +17,6 @@ public class UserEntity {
     @Id
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private HashSet<OrderEntity> orders;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<OrderEntity> orders;
 }

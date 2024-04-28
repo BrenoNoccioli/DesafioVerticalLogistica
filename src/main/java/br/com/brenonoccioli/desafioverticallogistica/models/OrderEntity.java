@@ -23,12 +23,8 @@ public class OrderEntity {
     private UserEntity user;
     private BigDecimal totalPrice;
     private LocalDate date;
-
-    @ManyToMany
-    @JoinTable(
-            name = "pedido_produto",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<ProductEntity> products;
+    @ElementCollection
+    @CollectionTable(name = "Order_products", joinColumns = @JoinColumn(name = "order_id"))
+    @Embedded
+    private List<Product> products;
 }

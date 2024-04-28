@@ -1,9 +1,10 @@
 package br.com.brenonoccioli.desafioverticallogistica.service;
 
 import br.com.brenonoccioli.desafioverticallogistica.models.OrderEntity;
-import br.com.brenonoccioli.desafioverticallogistica.models.ProductEntity;
+import br.com.brenonoccioli.desafioverticallogistica.models.Product;
 import br.com.brenonoccioli.desafioverticallogistica.models.UserEntity;
 
+import br.com.brenonoccioli.desafioverticallogistica.repository.OrdersRepository;
 import br.com.brenonoccioli.desafioverticallogistica.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper.convertStringtoLocalDate;
+import static br.com.brenonoccioli.desafioverticallogistica.helpers.OrderHelper.calculateTotalPrice;
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.ProcessDataHelper.*;
 
 @Service
@@ -38,7 +40,7 @@ public class DataService {
             if (lineIsValid(line)){
                 UserEntity newUser = buildUserFromLineFields(line);
                 OrderEntity newOrder = buildOrderFromLineFields(line);
-                ProductEntity newProduct = buildProductFromLineFields(line);
+                Product newProduct = buildProductFromLineFields(line);
 
                 if (newUser == null || newOrder == null || newProduct == null){
                     errorList.add(line);
@@ -77,30 +79,35 @@ public class DataService {
 
     private void persistOrUpdateNewData(ArrayList<UserEntity> newUserEntities) {
         for (UserEntity newUser : newUserEntities){
-            HashSet<OrderEntity> newOrdersList = newUser.getOrders();
+            Set<OrderEntity> newOrdersList = newUser.getOrders();
             Optional<UserEntity> optionalUser = usersRepository.findById(newUser.getId());
 
             if (optionalUser.isPresent()){
                 UserEntity oldUser = optionalUser.get();
-                HashSet<OrderEntity> oldOrdersList = oldUser.getOrders();
+                Set<OrderEntity> oldOrdersList = oldUser.getOrders();
 
                 oldOrdersList.forEach(oldOrder -> {
                     newOrdersList.forEach(newOrder -> {
                         if (oldOrder.getId().equals(newOrder.getId())){
+
+                            oldOrder.setTotalPrice(calculateTotalPrice(oldOrder.getProducts()));
                             oldOrder.getProducts().addAll(newOrder.getProducts());
                         } else {
+                            oldOrder.setTotalPrice(calculateTotalPrice(oldOrder.getProducts()));
                             oldOrdersList.add(newOrder);
                         }
                     });
                 });
                 usersRepository.save(oldUser);
             } else {
+                newUser.getOrders().forEach(
+                        order -> order.setTotalPrice(calculateTotalPrice(order.getProducts())));
                 usersRepository.save(newUser);
             }
         }
     }
 
-    private ProductEntity buildProductFromLineFields(String line) {
+    private Product buildProductFromLineFields(String line) {
         Long productId = getProductId(line);
         BigDecimal productValue = getProductValue(line);
 
@@ -108,7 +115,7 @@ public class DataService {
             return null;
         }
 
-        return ProductEntity.builder()
+        return Product.builder()
                 .id(productId)
                 .value(productValue)
                 .build();
@@ -145,7 +152,7 @@ public class DataService {
                 .build();
     }
 
-    private OrderEntity getExistingOrder(HashSet<OrderEntity> orderList, OrderEntity newOrder){
+    private OrderEntity getExistingOrder(Set<OrderEntity> orderList, OrderEntity newOrder){
         for (OrderEntity order : orderList){
             if (order.getId().equals(newOrder.getId())){
                 return order;
