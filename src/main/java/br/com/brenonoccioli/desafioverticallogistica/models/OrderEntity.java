@@ -1,7 +1,6 @@
 package br.com.brenonoccioli.desafioverticallogistica.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +19,16 @@ import java.util.List;
 public class OrderEntity {
     @Id
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private UserEntity user;
+
     private BigDecimal totalPrice;
+
     private LocalDate date;
+
     @ElementCollection
     @CollectionTable(name = "Order_products", joinColumns = @JoinColumn(name = "order_id"))
     @Embedded

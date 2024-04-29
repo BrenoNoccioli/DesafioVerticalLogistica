@@ -27,7 +27,7 @@ public class DataService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataService.class);
 
-    public void proccessData(String dataArchive) {
+    public List<String> proccessData(String dataArchive) {
         LOGGER.info(String.format("Iniciando processamento do arquivo: %s", dataArchive));
 
         Scanner scanner = new Scanner(dataArchive);
@@ -69,13 +69,7 @@ public class DataService {
 
         persistAndUpdate(usersForPersistence, ordersForPersistence);
 
-        if (!errorList.isEmpty()){
-            LOGGER.error(String.format("Arquivo processado parcialmente com sucesso." +
-                    "\nLinhas não processadas:\n%s", errorList));
-        } else {
-            LOGGER.info("Arquivo processado inteiramente com sucesso!");
-        }
-
+        return errorList;
     }
 
     @Transactional

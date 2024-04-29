@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class DataArchiveController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataArchiveController.class);
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> inputData(@RequestBody String dataArchive) {
 
         LOGGER.info(String.format("Recebendo requisição para processar arquivo: %s", dataArchive));
@@ -27,9 +29,16 @@ public class DataArchiveController {
             //Lança Exception;
         }
 
-        service.proccessData(dataArchive);
+        List<String> resp = service.proccessData(dataArchive);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Arquivo processado com sucesso!");
+        if (!resp.isEmpty()){
+            LOGGER.error(String.format("Arquivo processado parcialmente com sucesso." +
+                    "\nLinhas não processadas:\n%s", resp));
+            return ResponseEntity.status(HttpStatus.CREATED).body("Arquivo processado parcialmente com sucesso.\n" +
+                    "Verifique os logs para mais informações");
+        }
+
+        LOGGER.info("Arquivo processado inteiramente com sucesso!");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Arquivo processado inteiramente com sucesso!");
     }
-
 }

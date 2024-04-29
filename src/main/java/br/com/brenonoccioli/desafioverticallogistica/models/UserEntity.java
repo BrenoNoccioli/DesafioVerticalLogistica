@@ -17,6 +17,6 @@ public class UserEntity {
     @Id
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<OrderEntity> orders;
 }

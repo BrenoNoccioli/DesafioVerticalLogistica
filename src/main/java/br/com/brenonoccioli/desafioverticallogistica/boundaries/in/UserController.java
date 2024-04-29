@@ -1,6 +1,5 @@
 package br.com.brenonoccioli.desafioverticallogistica.boundaries.in;
 
-import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.OrderResponse;
 import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.UserResponse;
 import br.com.brenonoccioli.desafioverticallogistica.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class UserController {
     @GetMapping("/orders")
     public ResponseEntity<List<UserResponse>> getOrdersData(){
 
-        List<UserResponse> resp = userService.getAllOrdersForUser();
+        List<UserResponse> resp = userService.getAll();
 
         return ResponseEntity.ok().body(resp);
     }
