@@ -9,7 +9,7 @@ public class DateHelper {
         return LocalDate.parse(strDate, formatter);
     }
 
-    public String convertLocalDateToString(LocalDate date, String format){
+    public static String convertLocalDateToString(LocalDate date, String format){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return date.format(formatter);
     }

@@ -69,7 +69,7 @@ public class DataService {
 
         persistAndUpdate(usersForPersistence, ordersForPersistence);
 
-        if (errorList.size() > 0){
+        if (!errorList.isEmpty()){
             LOGGER.error(String.format("Arquivo processado parcialmente com sucesso." +
                     "\nLinhas não processadas:\n%s", errorList));
         } else {

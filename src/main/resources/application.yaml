@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /desafio-vertical-logistica
+    context-path: /desafio-vertical-logistica/api
 
 spring:
   datasource:
