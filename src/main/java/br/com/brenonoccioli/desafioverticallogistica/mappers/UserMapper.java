@@ -1,16 +1,24 @@
 package br.com.brenonoccioli.desafioverticallogistica.mappers;
 
+import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.OrderResponse;
 import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.UserResponse;
 import br.com.brenonoccioli.desafioverticallogistica.models.UserEntity;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
-@Mapper(componentModel = "spring")
-public interface UserMapper {
 
-    UserResponse mapToResponse(UserEntity entity);
+@Component
+public class UserMapper {
 
-    @IterableMapping(elementTargetType = UserResponse.class)
-    List<UserResponse> mapToListResponse(List<UserEntity> entities);
-
+    public static UserResponse mapToUserResponse(UserEntity entity, List<OrderResponse> orders) {
+        if (entity == null) {
+            return null;
+        } else {
+            return UserResponse.builder()
+                    .id(entity.getId())
+                    .name(entity.getName())
+                    .orders(orders)
+                    .build();
+        }
+    }
 }

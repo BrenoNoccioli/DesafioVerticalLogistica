@@ -13,6 +13,5 @@ public class OrderResponse {
     private Long id;
     private String total;
     private String date;
-    private UserResponse user;
     private List<ProductResponse> products;
 }

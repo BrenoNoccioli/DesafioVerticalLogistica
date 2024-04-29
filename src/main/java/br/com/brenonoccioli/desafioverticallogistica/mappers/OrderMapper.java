@@ -1,28 +1,32 @@
 package br.com.brenonoccioli.desafioverticallogistica.mappers;
 
 import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.OrderResponse;
+import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.ProductResponse;
 import br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper;
 import br.com.brenonoccioli.desafioverticallogistica.models.OrderEntity;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
-public interface OrderMapper {
 
-    @Mapping(source = "totalPrice", target = "total")
-    @Mapping(source = "date", target = "date", qualifiedByName = "mapDateToString")
-    OrderResponse mapToResponse(OrderEntity entity);
+@Component
+public class OrderMapper {
 
-    @IterableMapping(elementTargetType = OrderResponse.class)
-    List<OrderResponse> mapToListResponse(List<OrderEntity> entities);
+    public static OrderResponse mapToResponse(OrderEntity entity, List<ProductResponse> products){
+        if (entity == null) {
+            return null;
+        } else {
+            return OrderResponse.builder()
+                    .id(entity.getId())
+                    .total(String.valueOf(entity.getTotalPrice()))
+                    .date(mapDateToString(entity.getDate()))
+                    .products(products)
+                    .build();
+        }
+    }
 
-    @Named("mapDateToString")
-    default String mapDateToString(LocalDate date){
+    private static String mapDateToString(LocalDate date){
         return DateHelper.convertLocalDateToString(date, "yyyy-MM-dd");
     }
 }

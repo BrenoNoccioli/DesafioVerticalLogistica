@@ -18,9 +18,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/orders")
-    public ResponseEntity<List<OrderResponse>> getOrdersData(){
+    public ResponseEntity<List<UserResponse>> getOrdersData(){
 
-        List<OrderResponse> resp = userService.getAllOrdersForUser();
+        List<UserResponse> resp = userService.getAllOrdersForUser();
 
         return ResponseEntity.ok().body(resp);
     }

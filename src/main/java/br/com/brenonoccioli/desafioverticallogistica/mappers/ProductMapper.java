@@ -2,24 +2,25 @@ package br.com.brenonoccioli.desafioverticallogistica.mappers;
 
 import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.ProductResponse;
 import br.com.brenonoccioli.desafioverticallogistica.models.Product;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-@Mapper(componentModel = "spring")
-public interface ProductMapper {
-    @Mapping(source = "value", target = "value", qualifiedByName = "convertToString")
-    ProductResponse mapToResponse(Product product);
+@Component
+public class ProductMapper {
+    public static ProductResponse mapToResponse(Product product){
+        if (product == null){
+            return null;
+        } else {
+            return ProductResponse.builder()
+                    .id(product.getId())
+                    .value(convertToString(product.getValue()))
+                    .build();
+        }
+    }
 
-    @IterableMapping(elementTargetType = Product.class)
-    List<ProductResponse> mapToListResponse(List<Product> products);
 
-    @Named("convertToString")
-    default String convertToString(BigDecimal value){
+    private static String convertToString(BigDecimal value){
         return String.valueOf(value);
     }
 }
