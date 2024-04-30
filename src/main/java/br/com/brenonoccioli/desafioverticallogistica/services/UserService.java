@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.com.brenonoccioli.desafioverticallogistica.constants.ApplicationConstants.YYYY_MM_DD;
-import static br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper.convertStringtoLocalDate;
+import static br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper.convertStringToLocalDate;
 import static br.com.brenonoccioli.desafioverticallogistica.mappers.OrderMapper.mapToOrderResponse;
 import static br.com.brenonoccioli.desafioverticallogistica.mappers.UserMapper.mapToUserResponse;
 
@@ -43,8 +43,8 @@ public class UserService {
 
             List<OrderEntity> consultedOrders;
             if (hasFilterByRangeDate){
-                LocalDate init = convertStringtoLocalDate(initDate, YYYY_MM_DD);
-                LocalDate finish = convertStringtoLocalDate(finishDate, YYYY_MM_DD);
+                LocalDate init = convertStringToLocalDate(initDate, YYYY_MM_DD);
+                LocalDate finish = convertStringToLocalDate(finishDate, YYYY_MM_DD);
                 consultedOrders = ordersRepository.findAllByDateBetween(init, finish);
             } else {
                 consultedOrders = ordersRepository.findAllByUserId(user.getId());

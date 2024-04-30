@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static br.com.brenonoccioli.desafioverticallogistica.constants.ApplicationConstants.YYYYMMDD;
-import static br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper.convertStringtoLocalDate;
+import static br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper.convertStringToLocalDate;
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.OrderHelper.calculateTotalPrice;
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.ProcessDataHelper.*;
 
@@ -130,7 +130,7 @@ public class DataService {
 
         return OrderEntity.builder()
                 .id(orderId)
-                .date(convertStringtoLocalDate(orderStrDate, YYYYMMDD))
+                .date(convertStringToLocalDate(orderStrDate, YYYYMMDD))
                 .totalPrice(BigDecimal.ZERO)
                 .products(new ArrayList<>())
                 .user(user)

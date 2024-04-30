@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import static br.com.brenonoccioli.desafioverticallogistica.constants.ApplicationConstants.YYYY_MM_DD;
 
 public class DateHelper {
-    public static LocalDate convertStringtoLocalDate(String strDate, String format){
+    public static LocalDate convertStringToLocalDate(String strDate, String format){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return LocalDate.parse(strDate, formatter);
     }
@@ -27,8 +27,8 @@ public class DateHelper {
 
         if (hasInit && hasFinish){
             if (initDate.length() == 10 && finishDate.length() == 10){
-                LocalDate init = convertStringtoLocalDate(initDate, YYYY_MM_DD);
-                LocalDate finish = convertStringtoLocalDate(finishDate, YYYY_MM_DD);
+                LocalDate init = convertStringToLocalDate(initDate, YYYY_MM_DD);
+                LocalDate finish = convertStringToLocalDate(finishDate, YYYY_MM_DD);
                 isValid = init.isBefore(finish) || init.equals(finish);
             } else {
                 isValid = false;
