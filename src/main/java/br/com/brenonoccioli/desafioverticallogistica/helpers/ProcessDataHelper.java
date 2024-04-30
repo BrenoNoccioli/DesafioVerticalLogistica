@@ -44,16 +44,12 @@ public class ProcessDataHelper {
 
     private static String cleanZeroBefore(String str) {
         String cleanStr = str.replaceFirst("^[0\\s]+", "");
-        return fieldIsValid(cleanStr) ? cleanStr : null;
+        return cleanStr.isBlank() ? null : cleanStr;
     }
 
     private static String cleanWhiteSpaceBefore(String str) {
         String cleanStr = str.replaceFirst("^['\\s]+", "");
-        return fieldIsValid(cleanStr) ? cleanStr : null;
-    }
-
-    private static Boolean fieldIsValid(String cleanStr) {
-        return cleanStr != null && !cleanStr.isBlank();
+        return cleanStr.isBlank() ? null : cleanStr;
     }
 }
 
