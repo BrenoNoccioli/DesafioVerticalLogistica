@@ -1,6 +1,7 @@
 package br.com.brenonoccioli.desafioverticallogistica.boundaries.in;
 
-import br.com.brenonoccioli.desafioverticallogistica.service.DataService;
+import br.com.brenonoccioli.desafioverticallogistica.exceptions.RequestNotValidException;
+import br.com.brenonoccioli.desafioverticallogistica.services.DataService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,16 +27,17 @@ public class DataArchiveController {
         LOGGER.info(String.format("Recebendo requisição para processar arquivo: %s", dataArchive));
 
         if (dataArchive == null || dataArchive.isEmpty()){
-            //Lança Exception;
+            LOGGER.error("Requisição inválida: arquivo nulo ou vazio");
+            throw RequestNotValidException.create();
         }
 
         List<String> resp = service.proccessData(dataArchive);
 
         if (!resp.isEmpty()){
-            LOGGER.error(String.format("Arquivo processado parcialmente com sucesso." +
+            LOGGER.info(String.format("Arquivo processado parcialmente com sucesso." +
                     "\nLinhas não processadas:\n%s", resp));
             return ResponseEntity.status(HttpStatus.CREATED).body("Arquivo processado parcialmente com sucesso.\n" +
-                    "Verifique os logs para mais informações");
+                    "Verifique os logs para mais informações.");
         }
 
         LOGGER.info("Arquivo processado inteiramente com sucesso!");

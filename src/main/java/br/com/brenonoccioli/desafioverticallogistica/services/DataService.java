@@ -1,11 +1,11 @@
-package br.com.brenonoccioli.desafioverticallogistica.service;
+package br.com.brenonoccioli.desafioverticallogistica.services;
 
 import br.com.brenonoccioli.desafioverticallogistica.models.OrderEntity;
 import br.com.brenonoccioli.desafioverticallogistica.models.Product;
 import br.com.brenonoccioli.desafioverticallogistica.models.UserEntity;
 
-import br.com.brenonoccioli.desafioverticallogistica.repository.OrdersRepository;
-import br.com.brenonoccioli.desafioverticallogistica.repository.UsersRepository;
+import br.com.brenonoccioli.desafioverticallogistica.repositories.OrdersRepository;
+import br.com.brenonoccioli.desafioverticallogistica.repositories.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static br.com.brenonoccioli.desafioverticallogistica.constants.ApplicationConstants.YYYYMMDD;
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper.convertStringtoLocalDate;
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.OrderHelper.calculateTotalPrice;
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.ProcessDataHelper.*;
@@ -28,8 +29,6 @@ public class DataService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataService.class);
 
     public List<String> proccessData(String dataArchive) {
-        LOGGER.info(String.format("Iniciando processamento do arquivo: %s", dataArchive));
-
         Scanner scanner = new Scanner(dataArchive);
 
         ArrayList<String> errorList = new ArrayList<>();
@@ -74,30 +73,36 @@ public class DataService {
 
     @Transactional
     private void persistAndUpdate(List<UserEntity> newUserList, List<OrderEntity> newOrderList) {
-        ArrayList<UserEntity> userPersistList = new ArrayList<>();
-        for (UserEntity newUser : newUserList){
-            Optional<UserEntity> optionalUser = usersRepository.findById(newUser.getId());
+        try {
+            ArrayList<UserEntity> userPersistList = new ArrayList<>();
+            for (UserEntity newUser : newUserList){
+                Optional<UserEntity> optionalUser = usersRepository.findById(newUser.getId());
 
-            if (optionalUser.isEmpty()){
-                userPersistList.add(newUser);
+                if (optionalUser.isEmpty()){
+                    userPersistList.add(newUser);
+                }
             }
-        }
-        usersRepository.saveAll(userPersistList);
+            usersRepository.saveAll(userPersistList);
 
-        HashSet<OrderEntity> orderPersistList = new HashSet<>();
-        for (OrderEntity newOrder : newOrderList){
-            Optional<OrderEntity> optionalOrder = ordersRepository.findById(newOrder.getId());
+            HashSet<OrderEntity> orderPersistList = new HashSet<>();
+            for (OrderEntity newOrder : newOrderList){
+                Optional<OrderEntity> optionalOrder = ordersRepository.findById(newOrder.getId());
 
-            if (optionalOrder.isPresent()){
-                OrderEntity oldOrder = optionalOrder.get();
-                oldOrder.getProducts().addAll(newOrder.getProducts());
-                orderPersistList.add(oldOrder);
-            } else {
-                orderPersistList.add(newOrder);
+                if (optionalOrder.isPresent()){
+                    OrderEntity oldOrder = optionalOrder.get();
+                    oldOrder.getProducts().addAll(newOrder.getProducts());
+                    orderPersistList.add(oldOrder);
+                } else {
+                    orderPersistList.add(newOrder);
+                }
             }
+            orderPersistList.forEach(order -> order.setTotalPrice(calculateTotalPrice(order.getProducts())));
+            ordersRepository.saveAll(orderPersistList);
+
+        } catch (Exception ex) {
+            LOGGER.error("Algo de inesperado ocorreu durante a persistência dos dados");
+            throw new RuntimeException();
         }
-        orderPersistList.forEach(order -> order.setTotalPrice(calculateTotalPrice(order.getProducts())));
-        ordersRepository.saveAll(orderPersistList);
     }
 
     private Product buildProductFromLine(String line) {
@@ -125,7 +130,7 @@ public class DataService {
 
         return OrderEntity.builder()
                 .id(orderId)
-                .date(convertStringtoLocalDate(orderStrDate, "yyyMMdd"))
+                .date(convertStringtoLocalDate(orderStrDate, YYYYMMDD))
                 .totalPrice(BigDecimal.ZERO)
                 .products(new ArrayList<>())
                 .user(user)

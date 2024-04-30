@@ -6,6 +6,7 @@ import br.com.brenonoccioli.desafioverticallogistica.models.OrderEntity;
 
 import java.util.List;
 
+import static br.com.brenonoccioli.desafioverticallogistica.constants.ApplicationConstants.YYYY_MM_DD;
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper.convertLocalDateToString;
 
 
@@ -18,7 +19,7 @@ public class OrderMapper {
             return OrderResponse.builder()
                     .id(entity.getId())
                     .total(String.valueOf(entity.getTotalPrice()))
-                    .date(convertLocalDateToString(entity.getDate(), "yyyy-MM-dd"))
+                    .date(convertLocalDateToString(entity.getDate(), YYYY_MM_DD))
                     .products(products)
                     .build();
         }
