@@ -1,5 +1,6 @@
 package br.com.brenonoccioli.desafioverticallogistica.boundaries.in;
 
+import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.Message;
 import br.com.brenonoccioli.desafioverticallogistica.exceptions.RequestNotValidException;
 import br.com.brenonoccioli.desafioverticallogistica.services.DataService;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +33,16 @@ public class DataArchiveController {
         }
 
         List<String> resp = service.proccessData(dataArchive);
-
         if (!resp.isEmpty()){
             LOGGER.info(String.format("Arquivo processado parcialmente com sucesso." +
                     "\nLinhas não processadas:\n%s", resp));
-            return ResponseEntity.status(HttpStatus.CREATED).body("Arquivo processado parcialmente com sucesso.\n" +
-                    "Verifique os logs para mais informações.");
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new Message("Arquivo processado parcialmente com sucesso." +
+                            "Verifique os logs para mais informações."));
         }
 
         LOGGER.info("Arquivo processado inteiramente com sucesso!");
-        return ResponseEntity.status(HttpStatus.CREATED).body("Arquivo processado inteiramente com sucesso!");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new Message("Arquivo processado inteiramente com sucesso!"));
     }
 }

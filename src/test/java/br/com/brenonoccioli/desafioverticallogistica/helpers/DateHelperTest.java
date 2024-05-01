@@ -6,10 +6,15 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 class DateHelperTest {
+
+    @Test
+    void testConstructor(){
+        assertDoesNotThrow(DateHelper::new);
+    }
 
     @ParameterizedTest
     @CsvSource({"2024-04-30, yyyy-MM-dd, 2024-04-30",

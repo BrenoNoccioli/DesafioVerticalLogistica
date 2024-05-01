@@ -1,19 +1,14 @@
 package br.com.brenonoccioli.desafioverticallogistica.mappers;
 
-import br.com.brenonoccioli.desafioverticallogistica.OrderTestData;
-import br.com.brenonoccioli.desafioverticallogistica.ProductTestData;
 import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.OrderResponse;
 import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.ProductResponse;
-import br.com.brenonoccioli.desafioverticallogistica.constants.ApplicationConstants;
-import br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper;
+import br.com.brenonoccioli.desafioverticallogistica.helpers.OrderHelper;
 import br.com.brenonoccioli.desafioverticallogistica.models.OrderEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,6 +19,11 @@ import static br.com.brenonoccioli.desafioverticallogistica.ProductTestData.getP
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderMapperTest {
+
+    @Test
+    void testConstructor(){
+        assertDoesNotThrow(OrderMapper::new);
+    }
 
     @ParameterizedTest
     @MethodSource("sourceTestMapper")

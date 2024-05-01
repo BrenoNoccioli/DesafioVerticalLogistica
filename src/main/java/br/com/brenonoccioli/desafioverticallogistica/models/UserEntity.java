@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -19,5 +19,5 @@ public class UserEntity {
     private Long id;
     private String name;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<OrderEntity> orders;
+    private Set<OrderEntity> orders = new HashSet<>();
 }

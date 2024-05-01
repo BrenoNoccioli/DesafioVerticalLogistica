@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,5 +33,5 @@ public class OrderEntity {
     @ElementCollection
     @CollectionTable(name = "Order_products", joinColumns = @JoinColumn(name = "order_id"))
     @Embedded
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 }

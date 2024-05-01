@@ -12,6 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderHelperTest {
 
     @Test
+    void testConstructor(){
+        assertDoesNotThrow(OrderHelper::new);
+    }
+
+    @Test
     void testCalculateTotalPrice(){
         List<Product> products = List.of(Product.builder().value(BigDecimal.TEN).build(),
                 Product.builder().value(new BigDecimal("100.31")).build(),

@@ -73,36 +73,30 @@ public class DataService {
 
     @Transactional
     private void persistAndUpdate(List<UserEntity> newUserList, List<OrderEntity> newOrderList) {
-        try {
-            ArrayList<UserEntity> userPersistList = new ArrayList<>();
-            for (UserEntity newUser : newUserList){
-                Optional<UserEntity> optionalUser = usersRepository.findById(newUser.getId());
+        ArrayList<UserEntity> userPersistList = new ArrayList<>();
+        for (UserEntity newUser : newUserList){
+            Optional<UserEntity> optionalUser = usersRepository.findById(newUser.getId());
 
-                if (optionalUser.isEmpty()){
-                    userPersistList.add(newUser);
-                }
+            if (optionalUser.isEmpty()){
+                userPersistList.add(newUser);
             }
-            usersRepository.saveAll(userPersistList);
-
-            HashSet<OrderEntity> orderPersistList = new HashSet<>();
-            for (OrderEntity newOrder : newOrderList){
-                Optional<OrderEntity> optionalOrder = ordersRepository.findById(newOrder.getId());
-
-                if (optionalOrder.isPresent()){
-                    OrderEntity oldOrder = optionalOrder.get();
-                    oldOrder.getProducts().addAll(newOrder.getProducts());
-                    orderPersistList.add(oldOrder);
-                } else {
-                    orderPersistList.add(newOrder);
-                }
-            }
-            orderPersistList.forEach(order -> order.setTotalPrice(calculateTotalPrice(order.getProducts())));
-            ordersRepository.saveAll(orderPersistList);
-
-        } catch (Exception ex) {
-            LOGGER.error("Algo de inesperado ocorreu durante a persistência dos dados");
-            throw new RuntimeException();
         }
+        usersRepository.saveAll(userPersistList);
+
+        HashSet<OrderEntity> orderPersistList = new HashSet<>();
+        for (OrderEntity newOrder : newOrderList){
+            Optional<OrderEntity> optionalOrder = ordersRepository.findById(newOrder.getId());
+
+            if (optionalOrder.isPresent()){
+                OrderEntity oldOrder = optionalOrder.get();
+                oldOrder.getProducts().addAll(newOrder.getProducts());
+                orderPersistList.add(oldOrder);
+            } else {
+                orderPersistList.add(newOrder);
+            }
+        }
+        orderPersistList.forEach(order -> order.setTotalPrice(calculateTotalPrice(order.getProducts())));
+        ordersRepository.saveAll(orderPersistList);
     }
 
     private Product buildProductFromLine(String line) {

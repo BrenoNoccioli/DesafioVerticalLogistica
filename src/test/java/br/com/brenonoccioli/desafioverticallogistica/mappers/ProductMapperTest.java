@@ -2,6 +2,7 @@ package br.com.brenonoccioli.desafioverticallogistica.mappers;
 
 import br.com.brenonoccioli.desafioverticallogistica.boundaries.in.dto.ProductResponse;
 import br.com.brenonoccioli.desafioverticallogistica.models.Product;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,6 +13,11 @@ import static br.com.brenonoccioli.desafioverticallogistica.ProductTestData.getP
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductMapperTest {
+
+    @Test
+    void testConstructor(){
+        assertDoesNotThrow(ProductMapper::new);
+    }
 
     @ParameterizedTest
     @MethodSource("sourceTestMapper")

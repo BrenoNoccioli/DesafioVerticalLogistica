@@ -12,7 +12,7 @@ public class UserTestData {
     public static UserEntity getUserEntity(Set<OrderEntity> orders){
         if (orders != null){
             return UserEntity.builder()
-                    .id(1L)
+                    .id(70L)
                     .name("Fulano de Tal")
                     .orders(orders)
                     .build();
@@ -25,7 +25,7 @@ public class UserTestData {
 
     public static UserResponse getUserResponse(List<OrderResponse> ordersResponse){
         return UserResponse.builder()
-                .id(1L)
+                .id(70L)
                 .name("Fulano de Tal")
                 .orders(ordersResponse)
                 .build();
