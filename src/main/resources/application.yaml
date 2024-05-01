@@ -1,13 +1,13 @@
 server:
   port: 8080
   servlet:
-    context-path: /desafio-vertical-logistica
+    context-path: /desafio-vertical-logistica/api
 
 spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/vertical_logistica?createDatabaseIfNotExist=true
-    username: root
-    password: root
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     show-sql: false

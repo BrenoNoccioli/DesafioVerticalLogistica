@@ -1,11 +1,11 @@
-package br.com.brenonoccioli.desafioverticallogistica.service;
+package br.com.brenonoccioli.desafioverticallogistica.services;
 
 import br.com.brenonoccioli.desafioverticallogistica.models.OrderEntity;
 import br.com.brenonoccioli.desafioverticallogistica.models.Product;
 import br.com.brenonoccioli.desafioverticallogistica.models.UserEntity;
 
-import br.com.brenonoccioli.desafioverticallogistica.repository.OrdersRepository;
-import br.com.brenonoccioli.desafioverticallogistica.repository.UsersRepository;
+import br.com.brenonoccioli.desafioverticallogistica.repositories.OrdersRepository;
+import br.com.brenonoccioli.desafioverticallogistica.repositories.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper.convertStringtoLocalDate;
+import static br.com.brenonoccioli.desafioverticallogistica.constants.ApplicationConstants.YYYYMMDD;
+import static br.com.brenonoccioli.desafioverticallogistica.helpers.DateHelper.convertStringToLocalDate;
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.OrderHelper.calculateTotalPrice;
 import static br.com.brenonoccioli.desafioverticallogistica.helpers.ProcessDataHelper.*;
 
@@ -27,9 +28,7 @@ public class DataService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataService.class);
 
-    public void proccessData(String dataArchive) {
-        LOGGER.info(String.format("Iniciando processamento do arquivo: %s", dataArchive));
-
+    public List<String> proccessData(String dataArchive) {
         Scanner scanner = new Scanner(dataArchive);
 
         ArrayList<String> errorList = new ArrayList<>();
@@ -69,13 +68,7 @@ public class DataService {
 
         persistAndUpdate(usersForPersistence, ordersForPersistence);
 
-        if (errorList.size() > 0){
-            LOGGER.error(String.format("Arquivo processado parcialmente com sucesso." +
-                    "\nLinhas não processadas:\n%s", errorList));
-        } else {
-            LOGGER.info("Arquivo processado inteiramente com sucesso!");
-        }
-
+        return errorList;
     }
 
     @Transactional
@@ -131,7 +124,7 @@ public class DataService {
 
         return OrderEntity.builder()
                 .id(orderId)
-                .date(convertStringtoLocalDate(orderStrDate, "yyyMMdd"))
+                .date(convertStringToLocalDate(orderStrDate, YYYYMMDD))
                 .totalPrice(BigDecimal.ZERO)
                 .products(new ArrayList<>())
                 .user(user)
