@@ -47,5 +47,4 @@ public class UserController {
         LOGGER.info(String.format("Requisição concluída com sucesso: '%s'", resp));
         return ResponseEntity.ok().body(resp);
     }
-
 }

@@ -33,6 +33,7 @@ public class DataArchiveController {
         }
 
         List<String> resp = service.proccessData(dataArchive);
+
         if (!resp.isEmpty()){
             LOGGER.info(String.format("Arquivo processado parcialmente com sucesso." +
                     "\nLinhas não processadas:\n%s", resp));
