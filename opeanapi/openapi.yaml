@@ -1,0 +1,144 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: API para desafio Vertical Logística - input de arquivo de texto e consulta das informações
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: brenonoccioli@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://localhost:8080/desafio-vertical-logistica/api
+    port: 8080
+paths:
+  /archives:
+    post:
+      tags:
+        - data archives
+      description: Proccess data text, persisting in informations in database
+      operationId: postArchives
+      requestBody:
+        description: txt document
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/postArchive'
+        required: true
+      responses:
+        '201':
+          description: Archive successfully proccessed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/postArchivesSuccess'
+        '400':
+          description: Invalid input
+  /users/orders:
+    get:
+      tags:
+        - users/orders
+      description: Get orders by users
+      operationId: getUsersOrders
+      parameters:
+        - name: init_date
+          in: query
+          description: Date of init range
+          required: false
+          explode: true
+          schema:
+            type: string
+            example: yyyy-MM-dd
+        - name: finish_date
+          in: query
+          description: Date of finish range
+          required: false
+          schema:
+            type: string
+            example: yyyy-MM-dd
+      responses:
+        '200':
+          description: Get successfuly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersList'
+  /users/orders/{orderId}:
+    get:
+      tags:
+        - users/orders
+      description: Get order for user by id
+      operationId: getUserOrderById
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of order
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+        '404':
+          description: ID not found
+components:
+  schemas:
+    postArchive:
+      type: string
+      example: '0000000011                              Nome Ususario0000000111000000000001     1000.00yyyyMMdd'
+    postArchivesSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Arquivo processado parcialmente com sucesso.Verifique os logs para mais informações."
+    UsersList:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: ID of user
+        name:
+          type: string
+          description: Name of user
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    Order:
+      type: object
+      properties:
+        order_id:
+          type: integer
+          description: ID of order
+        total:
+          type: string
+          description: Total price of order. Sum of the price of all products
+        date:
+          type: string
+          description: Date of order
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    Product:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          description: ID of product
+        value:
+          type: string
+          description: Price of product
