@@ -25,23 +25,40 @@ Exemplo de payload do arquivo de texto:
 - Cada pedido deve ser único e pertencer a apenas um usuário;
 - Produtos não possuem id único, podendo estar atrelados a pedidos diferentes inclusive com valores diferentes;
 - Como produtos podem possuir preços diferentes para o mesmo id, podem existir produtos com o mesmo id dentro de um mesmo pedido;
-- O arquivo deve ser processado o quanto for possível. Dessa forma, as linhas com informações inválidas foram desprezadas;
+- O arquivo deve ser processado o quanto for possível. Dessa forma, as linhas com informações inválidas foram desprezadas,
+mas podem ser consultadas via log da aplicação;
+- O filtro por intervalo de data é opcional na consulta, mas quando informado ambos os parâmetros passam a ser obrigatórios.
+
+# Como executar
+- Execute o banco de dados relacional de sua preferência (aqui foi utilizado MySQL);
+- Defina url, usuário e senha do seu banco de dados no arquivo [application.yaml](src%2Fmain%2Fresources%2Fapplication.yaml):
+![img_3.png](docs/imgReadme/img_3.png)
+- Pronto! A aplicação está pronta para ser executada e você pode acessar os endpoints pela url
+``http://localhost:8080/desafio-vertical-logistica/api/{endpoint}``.
 
 # Como testar
 ## Testes unitários
-Executar o comando ``mvn test`` e verificar o relatório gerado no diretório 
+Execute o comando ``mvn test`` e verifique o relatório gerado em 
 ``DesafioVerticalLogistica -> target -> site -> index.html``
 
-![img_1.png](imgReadme/img_1.png)
+![img_1.png](docs/imgReadme/img_1.png)
 
 ## Testes mutantes
-Executar o comando ``mvn test-compile org.pitest:pitest-maven:mutationCoverage``
-e verificar o relatório gerado no diretório ``DesafioVerticalLogistica -> target -> pit-reports -> index.html``
+Execute o comando ``mvn test-compile org.pitest:pitest-maven:mutationCoverage``
+e verifique o relatório gerado em ``DesafioVerticalLogistica -> target -> pit-reports -> index.html``
 
-![img.png](imgReadme/img.png)
+![img.png](docs/imgReadme/img.png)
 
 ## Testes de API
-A collection com as chamadas desta API estão disponíveis no diretório ``DesafioVerticalLogistica -> collections ->``[conllection-desafio-Insomnia_2024-05-01](collections%2Fconllection-desafio-Insomnia_2024-05-01)
+A collection com as chamadas desta API estão disponíveis em
+``DesafioVerticalLogistica -> docs -> collections ->``[conllection-desafio-Insomnia_2024-05-01](collections%2Fconllection-desafio-Insomnia_2024-05-01)
 
 ## OpenAPI
-Você pode acessar a documentação dos endpoints desta API no diretório ``DesafioVerticalLogistica -> openapi ->``[openapi.yaml](opeanapi%2Fopenapi.yaml)
+Você pode acessar a documentação dos endpoints desta API em
+``DesafioVerticalLogistica -> docs -> openapi ->``[openapi.yaml](opeanapi%2Fopenapi.yaml)
+
+# HealthCheck
+Para verificar o healthcheck, execute a aplicação e acesse
+``http://localhost:8080/desafio-vertical-logistica/api/actuator``
+
+![img.png](docs/imgReadme/img_2.png)
