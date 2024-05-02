@@ -51,11 +51,11 @@ e verifique o relatório gerado em ``DesafioVerticalLogistica -> target -> pit-r
 
 ## Testes de API
 A collection com as chamadas desta API estão disponíveis em
-``DesafioVerticalLogistica -> docs -> collections ->``[conllection-desafio-Insomnia_2024-05-01](collections%2Fconllection-desafio-Insomnia_2024-05-01)
+``DesafioVerticalLogistica -> docs -> collections -> collection-desafio-Insomnia_2024-05-01``
 
 ## OpenAPI
 Você pode acessar a documentação dos endpoints desta API em
-``DesafioVerticalLogistica -> docs -> openapi ->``[openapi.yaml](opeanapi%2Fopenapi.yaml)
+``DesafioVerticalLogistica -> docs -> openapi -> openapi.yaml``
 
 # HealthCheck
 Para verificar o healthcheck, execute a aplicação e acesse
