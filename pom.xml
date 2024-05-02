@@ -55,6 +55,11 @@
 			<artifactId>mockito-core</artifactId>
 			<version>4.5.1</version> <!-- Asegúrate de usar la última versión disponible -->
 		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.5.9</version>
+		</dependency>
 	</dependencies>
 
 	<build>
